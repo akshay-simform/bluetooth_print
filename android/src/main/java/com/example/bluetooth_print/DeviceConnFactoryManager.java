@@ -203,7 +203,14 @@ public class DeviceConnFactoryManager {
                 reader.cancel();
                 reader = null;
             }
-            boolean b= this.mPort.closePort();
+
+            boolean b= false;
+            try {
+                b= this.mPort.closePort();
+            }catch (Exception ignored){
+
+            }
+
             if(b) {
                 this.mPort=null;
                 isOpenPort = false;
@@ -246,17 +253,17 @@ public class DeviceConnFactoryManager {
         private CONN_METHOD connMethod;
         private Context context;
 
-        public DeviceConnFactoryManager.Build setMacAddress(String macAddress) {
+        public Build setMacAddress(String macAddress) {
             this.macAddress = macAddress;
             return this;
         }
 
-        public DeviceConnFactoryManager.Build setConnMethod(CONN_METHOD connMethod) {
+        public Build setConnMethod(CONN_METHOD connMethod) {
             this.connMethod = connMethod;
             return this;
         }
 
-        public DeviceConnFactoryManager.Build setContext(Context context) {
+        public Build setContext(Context context) {
             this.context = context;
             return this;
         }

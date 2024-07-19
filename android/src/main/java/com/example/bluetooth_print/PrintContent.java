@@ -23,6 +23,7 @@ public class PrintContent {
        */
       public static Vector<Byte> mapToReceipt(Map<String,Object> config, List<Map<String,Object>> list) {
             EscCommand esc = new EscCommand();
+
             //初始化打印机
             esc.addInitializePrinter();
             //打印走纸多少个单位
@@ -49,12 +50,12 @@ public class PrintContent {
                   esc.addSelectJustification(align==0?EscCommand.JUSTIFICATION.LEFT:(align==1?EscCommand.JUSTIFICATION.CENTER:EscCommand.JUSTIFICATION.RIGHT));
 
                   if("text".equals(type)){
-                        int absolutePos = (int)(m.get("absolutePos")==null?0:m.get("absolutePos"));
-                        int relativePos = (int)(m.get("relativePos")==null?0:m.get("relativePos"));
+                        int x = (int)(m.get("x")==null?0:m.get("x"));
+                        int relativeX = (int)(m.get("relativeX")==null?0:m.get("relativeX"));
                         int fontZoom = (int)(m.get("fontZoom")==null?1:m.get("fontZoom"));
-                        short aPos = (short)absolutePos;
-                        short rPos = (short)relativePos;
-                        Log.e(TAG,"******************* absolutePos: " + aPos +", relativePos: " + rPos +", fontZoom: " + fontZoom);
+                        short aPos = (short)x;
+                        short rPos = (short)relativeX;
+                        Log.e(TAG,"******************* x: " + aPos +", relativeX: " + rPos +", fontZoom: " + fontZoom);
 
                         // 设置绝对打印位置，将当前打印位置设置到距离行首 n* hor_motion_unit 点
                         esc.addSetAbsolutePrintPosition(aPos);
@@ -91,7 +92,7 @@ public class PrintContent {
                   }else if("image".equals(type)){
                         byte[] bytes = Base64.decode(content, Base64.DEFAULT);
                         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        esc.addRastBitImage(bitmap, 576, 0);
+                        esc.addRastBitImage(bitmap, width, 0);
                   }
 
                   if(linefeed == 1){

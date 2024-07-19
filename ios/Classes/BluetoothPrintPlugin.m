@@ -186,7 +186,7 @@
     
     EscCommand *command = [[EscCommand alloc]init];
     [command addInitializePrinter];
-    [command addPrintAndFeedLines:3];
+//    [command addPrintAndFeedLines:3];
 
     for(NSDictionary *m in list){
         
@@ -235,7 +235,7 @@
         }else if([@"image" isEqualToString:type]){
             NSData *decodeData = [[NSData alloc] initWithBase64EncodedString:content options:0];
             UIImage *image = [UIImage imageWithData:decodeData];
-            [command addOriginrastBitImage:image width:576];
+            [command addOriginrastBitImage:image width:[width intValue]];
         }
         
         if([linefeed isEqualToNumber:@1]){
@@ -244,7 +244,12 @@
        
     }
     
-    [command addPrintAndFeedLines:4];
+//    [command addPrintAndFeedLines:4];
+    if([[config objectForKey:@"cut"] isEqualToNumber:@1]){
+        [command addCutPaperAndFeed:1];
+    } else {
+        [command addPrintAndLineFeed];
+    }
     return [command getCommand];
 }
 
